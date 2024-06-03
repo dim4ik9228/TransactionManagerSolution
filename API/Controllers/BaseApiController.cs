@@ -11,7 +11,7 @@ public abstract class BaseApiController() : ControllerBase
     {
         return result.IsSuccess switch
         {
-            true when result.Value is null => NotFound(),
+            true when result.Value is null => NotFound("Requested resource was not found."),
             true when result.Value is not null => Ok(result.Value),
             _ => BadRequest(CreateProblemDetails(
                 "Bad request",
@@ -21,7 +21,7 @@ public abstract class BaseApiController() : ControllerBase
         };
     }
 
-    protected static ProblemDetails CreateProblemDetails(
+    private static ProblemDetails CreateProblemDetails(
         string title, int status, Error error, Error[]? errors = null) => new()
     {
         Title = title,
