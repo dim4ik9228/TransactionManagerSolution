@@ -69,7 +69,7 @@ public class AccountsControllerTests
 
         // Assert
         var actionResult = result.Should().BeOfType<ActionResult<BankAccountDto>>().Subject;
-        actionResult.Result.Should().BeOfType<NotFoundResult>();
+        actionResult.Result.Should().BeOfType<NotFoundObjectResult>();
     }
 
     [Fact]
