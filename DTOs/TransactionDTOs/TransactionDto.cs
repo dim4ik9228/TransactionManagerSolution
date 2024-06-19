@@ -1,6 +1,6 @@
 ﻿using Domain.Transactions;
 
-namespace Application.DTOs;
+namespace DTOs.TransactionDTOs;
 
 public sealed record TransactionDto(
     Guid Id,

@@ -1,6 +1,6 @@
 ﻿using Application.Commands.DepositCommand;
+using Application.Managers;
 using Domain.BankAccounts;
-using Domain.Transactions;
 using NSubstitute.ReturnsExtensions;
 
 namespace ApplicationUnitTests.Commands;
@@ -20,7 +20,7 @@ public sealed class DepositCommandTests
         var bankAccount = new BankAccount(_bankAccountId, initialBalanceCents);
 
         _bankAccountManager
-            .GetBankAccount(_bankAccountId)
+            .GetBankAccountById(_bankAccountId)
             .Returns(bankAccount);
 
         var command = new DepositCommand(_bankAccountId, depositAmountCents);
@@ -46,7 +46,7 @@ public sealed class DepositCommandTests
     {
         // Arrange
 
-        _bankAccountManager.GetBankAccount(_bankAccountId)
+        _bankAccountManager.GetBankAccountById(_bankAccountId)
             .ReturnsNull();
 
         var command = new DepositCommand(_bankAccountId, default);
@@ -64,6 +64,6 @@ public sealed class DepositCommandTests
             .Be(BankAccountErrors.NotFound);
 
         await _bankAccountManager.Received()
-            .GetBankAccount(_bankAccountId);
+            .GetBankAccountById(_bankAccountId);
     }
 }

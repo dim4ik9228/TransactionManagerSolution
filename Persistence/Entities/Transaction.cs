@@ -2,7 +2,7 @@
 
 namespace Persistence.Entities;
 
-public sealed class Transaction
+internal sealed class Transaction
 {
     public Guid Id { get; init; }
     public TransactionType TransactionType { get; init; }

@@ -1,4 +1,4 @@
-﻿namespace Application.DTOs;
+﻿namespace DTOs.BankAccountDTOs;
 
 public sealed record BankAccountDto(
     Guid AccountNumber,

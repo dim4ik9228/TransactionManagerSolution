@@ -1,9 +1,8 @@
 ﻿using Application.Commands.DepositCommand;
 using Application.Commands.RemoveTransactionCommand;
 using Application.Commands.WithdrawCommand;
-using Application.DTOs;
 using Application.Queries.GetTransactionsQuery;
-using Domain.Transactions;
+using DTOs.TransactionDTOs;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 

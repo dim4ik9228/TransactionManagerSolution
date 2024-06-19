@@ -1,6 +1,6 @@
-﻿using Application.DTOs;
-using Domain.BankAccounts;
+﻿using Application.Managers;
 using Domain.Shared;
+using DTOs.BankAccountDTOs;
 using MediatR;
 
 namespace Application.Queries.GetBankAccountQuery;
@@ -11,7 +11,7 @@ internal sealed class GetBankAccountQueryHandler(
 {
     public async Task<Result<BankAccountDto>> Handle(GetBankAccountQuery request, CancellationToken cancellationToken)
     {
-        var bankAccount = await bankAccountsManager.GetBankAccount(request.BankAccountId);
+        var bankAccount = await bankAccountsManager.GetBankAccountById(request.BankAccountId);
 
         if (bankAccount is null)
         {

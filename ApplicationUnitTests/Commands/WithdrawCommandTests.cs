@@ -1,6 +1,6 @@
 ﻿using Application.Commands.WithdrawCommand;
+using Application.Managers;
 using Domain.BankAccounts;
-using Domain.Transactions;
 using NSubstitute.ReturnsExtensions;
 
 namespace ApplicationUnitTests.Commands;
@@ -20,7 +20,7 @@ public sealed class WithdrawCommandTests
         var bankAccount = new BankAccount(_bankAccountId, initialBalanceCents);
 
         _bankAccountManager
-            .GetBankAccount(_bankAccountId)
+            .GetBankAccountById(_bankAccountId)
             .Returns(bankAccount);
 
         var command = new WithdrawCommand(_bankAccountId, withdrawAmountCents);
@@ -34,7 +34,7 @@ public sealed class WithdrawCommandTests
             .BeTrue();
 
         await _bankAccountManager.Received()
-            .GetBankAccount(_bankAccountId);
+            .GetBankAccountById(_bankAccountId);
 
         await _transactionManager.ReceivedWithAnyArgs()
             .AddTransaction(null!, _bankAccountId);
@@ -49,7 +49,7 @@ public sealed class WithdrawCommandTests
         var bankAccount = new BankAccount(_bankAccountId, initialBalanceCents);
 
         _bankAccountManager
-            .GetBankAccount(_bankAccountId)
+            .GetBankAccountById(_bankAccountId)
             .Returns(bankAccount);
 
         var command = new WithdrawCommand(_bankAccountId, withdrawAmountCents);
@@ -67,7 +67,7 @@ public sealed class WithdrawCommandTests
     [Fact]
     public async Task WithdrawCommandHandler_ShouldReturnFailureResult_WhenBankAccountIsNotFound()
     {
-        _bankAccountManager.GetBankAccount(_bankAccountId)
+        _bankAccountManager.GetBankAccountById(_bankAccountId)
             .ReturnsNull();
 
         var command = new WithdrawCommand(_bankAccountId, default);

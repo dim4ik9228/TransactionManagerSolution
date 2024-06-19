@@ -1,5 +1,5 @@
-﻿using Application.DTOs;
-using Domain.Shared;
+﻿using Domain.Shared;
+using DTOs.TransactionDTOs;
 using MediatR;
 
 namespace Application.Queries.GetTransactionsQuery;

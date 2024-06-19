@@ -1,7 +1,7 @@
-﻿using Application.DTOs;
+﻿using Application.Managers;
 using Domain.BankAccounts;
 using Domain.Shared;
-using Domain.Transactions;
+using DTOs.TransactionDTOs;
 using MediatR;
 
 namespace Application.Commands.WithdrawCommand;
@@ -12,7 +12,7 @@ internal sealed class WithdrawCommandHandler(
 {
     public async Task<Result<TransactionDto>> Handle(WithdrawCommand request, CancellationToken cancellationToken)
     {
-        var bankAccount = await bankAccountsManager.GetBankAccount(request.BankAccountId);
+        var bankAccount = await bankAccountsManager.GetBankAccountById(request.BankAccountId);
 
         if (bankAccount is null)
         {

@@ -1,9 +1,7 @@
 ﻿using Application.Commands.CreateAccountCommand;
-using Application.DTOs;
 using Application.Queries.GetBankAccountQuery;
-using Domain.BankAccounts;
+using DTOs.BankAccountDTOs;
 using MediatR;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;

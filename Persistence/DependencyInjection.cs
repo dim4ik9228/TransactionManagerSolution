@@ -1,6 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Persistence.Commands.BankAccountCommands;
+using Persistence.Commands.TransactionCommands;
+using Persistence.Queries.BankAccountQueries;
+using Persistence.Queries.TransactionQueries;
 
 namespace Persistence;
 
@@ -15,6 +19,13 @@ public static class DependencyInjection
             option.UseNpgsql(config.GetConnectionString("PostgreSqlConnection"),
                 o => o.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery));
         });
+
+        services.AddScoped<AddBankAccountCommand>();
+        services.AddScoped<UpdateBankAccountBalanceCommand>();
+        services.AddScoped<AddTransactionCommand>();
+        services.AddScoped<RemoveTransactionByIdCommand>();
+        services.AddScoped<GetBankAccountByIdQuery>();
+        services.AddScoped<GetTransactionsByBankAccountIdQuery>();
 
         return services;
     }

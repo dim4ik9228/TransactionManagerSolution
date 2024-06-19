@@ -1,7 +1,7 @@
-﻿using Application.DTOs;
+﻿using Application.Managers;
 using Domain.BankAccounts;
 using Domain.Shared;
-using Domain.Transactions;
+using DTOs.TransactionDTOs;
 using MediatR;
 
 namespace Application.Commands.DepositCommand;
@@ -13,7 +13,7 @@ internal sealed class DepositCommandHandler(
 {
     public async Task<Result<TransactionDto>> Handle(DepositCommand request, CancellationToken cancellationToken)
     {
-        var bankAccount = await bankAccountsManager.GetBankAccount(request.BankAccountId);
+        var bankAccount = await bankAccountsManager.GetBankAccountById(request.BankAccountId);
 
         if (bankAccount is null)
         {

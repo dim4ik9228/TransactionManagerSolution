@@ -1,6 +1,6 @@
 ﻿namespace Persistence.Entities;
 
-public sealed class BankAccount
+internal sealed class BankAccount
 {
     public Guid Id { get; init; }
     public int BalanceCents { get; set; }

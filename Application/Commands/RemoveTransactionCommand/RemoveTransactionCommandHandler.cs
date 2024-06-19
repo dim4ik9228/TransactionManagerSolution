@@ -1,5 +1,5 @@
-﻿using Domain.Shared;
-using Domain.Transactions;
+﻿using Application.Managers;
+using Domain.Shared;
 using MediatR;
 
 namespace Application.Commands.RemoveTransactionCommand;

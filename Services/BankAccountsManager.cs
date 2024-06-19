@@ -1,56 +1,37 @@
-﻿using Domain.BankAccounts;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Application.Managers;
+using Domain.BankAccounts;
 using Persistence;
+using Persistence.Commands.BankAccountCommands;
+using Persistence.Queries.BankAccountQueries;
 
 namespace Services;
 
 internal sealed class BankAccountsManager(
-    IServiceScopeFactory serviceScopeFactory
-) : BaseSingletonService(serviceScopeFactory), IBankAccountsManager
+    GetBankAccountByIdQuery getBankAccountByIdQuery,
+    AddBankAccountCommand addBankAccountCommand,
+    UpdateBankAccountBalanceCommand updateBankAccountBalanceCommand,
+    TransactionManagerDbContext dbContext
+) : IBankAccountsManager
 {
-    public async Task<BankAccount?> GetBankAccount(Guid accountId)
+    public async Task<BankAccount?> GetBankAccountById(Guid accountId)
     {
-        var dbContext = GetRequiredService<TransactionManagerDbContext>();
-
-        var bankAccount = await dbContext.BankAccounts
-            .AsNoTracking()
-            .FirstOrDefaultAsync(x => x.Id.Equals(accountId));
-
-        return bankAccount is null
-            ? null
-            : new BankAccount(bankAccount.Id, bankAccount.BalanceCents);
+        return await getBankAccountByIdQuery.Execute(accountId);
     }
 
     public async Task<Guid> AddBankAccount(BankAccount bankAccount)
     {
-        var dbContext = GetRequiredService<TransactionManagerDbContext>();
-
-        var bankAccountEntity = new Persistence.Entities.BankAccount
-        {
-            Id = bankAccount.AccountNumber,
-            BalanceCents = bankAccount.BalanceCents
-        };
-
-        await dbContext.BankAccounts.AddAsync(bankAccountEntity);
+        var result = await addBankAccountCommand.Execute(bankAccount);
         await dbContext.SaveChangesAsync();
-
-        return bankAccountEntity.Id;
+        return result;
     }
 
     public async Task UpdateBankAccountBalance(Guid accountId, int updatedBalanceCents)
     {
-        var dbContext = GetRequiredService<TransactionManagerDbContext>();
+        var result = await updateBankAccountBalanceCommand.Execute(accountId, updatedBalanceCents);
 
-        var bankAccount = await dbContext.BankAccounts
-            .FirstOrDefaultAsync(x => x.Id.Equals(accountId));
-
-        if (bankAccount is null)
+        if (result == 0)
         {
-            throw new KeyNotFoundException("Account with specified number was not found!");
+            throw new KeyNotFoundException("Account with such id was not found");
         }
-
-        bankAccount.BalanceCents = updatedBalanceCents;
-        await dbContext.SaveChangesAsync();
     }
 }

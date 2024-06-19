@@ -2,10 +2,10 @@
 using Application.Commands.DepositCommand;
 using Application.Commands.RemoveTransactionCommand;
 using Application.Commands.WithdrawCommand;
-using Application.DTOs;
 using Application.Queries.GetTransactionsQuery;
 using Domain.Shared;
 using Domain.Transactions;
+using DTOs.TransactionDTOs;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -76,7 +76,7 @@ public class TransactionsControllerTests
         _sender.Send(Arg.Is<DepositCommand>(cmd => cmd.BankAccountId == accountNumber
                                                    && cmd.AmountCents == amountCents))
             .Returns(Result<TransactionDto>.Success(default!));
-        
+
         // Act
         await _controller.Deposit(accountNumber, amountCents);
 

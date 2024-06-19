@@ -1,6 +1,7 @@
-﻿using Application.DTOs;
+﻿using Application.Managers;
 using Application.Queries.GetTransactionsQuery;
 using Domain.Transactions;
+using DTOs.TransactionDTOs;
 
 namespace ApplicationUnitTests.Queries;
 
@@ -13,19 +14,15 @@ public sealed class GetTransactionsQueryTests
     public async Task GetTransactionsQueryHandler_ShouldReturnTransactionsCollection()
     {
         // Arrange
-        List<Transaction> expectedTransactionsList =
+        List<TransactionDto> expectedTransactionsList =
         [
-            Transaction.DepositTransaction(500),
-            Transaction.DepositTransaction(500),
-            Transaction.WithdrawalTransaction(750)
+            new TransactionDto(Guid.NewGuid(), TransactionType.Deposit, 500, _accountId),
+            new TransactionDto(Guid.NewGuid(), TransactionType.Deposit, 300, _accountId),
+            new TransactionDto(Guid.NewGuid(), TransactionType.Withdrawal, 700, _accountId),
         ];
 
         _transactionsManager.GetTransactions(_accountId)
             .Returns(expectedTransactionsList);
-
-        var transactionDtos =
-            expectedTransactionsList.Select(x =>
-                new TransactionDto(x.Id, x.TransactionType, x.AmountCents, _accountId));
 
         var query = new GetTransactionsQuery(_accountId);
         var handler = new GetTransactionQueryHandler(_transactionsManager);
@@ -40,7 +37,7 @@ public sealed class GetTransactionsQueryTests
 
         result.Value
             .Should()
-            .BeEquivalentTo(transactionDtos);
+            .BeEquivalentTo(expectedTransactionsList);
 
         await _transactionsManager.Received()
             .GetTransactions(_accountId);

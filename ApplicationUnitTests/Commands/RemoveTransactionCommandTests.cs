@@ -1,5 +1,5 @@
 ﻿using Application.Commands.RemoveTransactionCommand;
-using Domain.Transactions;
+using Application.Managers;
 
 namespace ApplicationUnitTests.Commands;
 

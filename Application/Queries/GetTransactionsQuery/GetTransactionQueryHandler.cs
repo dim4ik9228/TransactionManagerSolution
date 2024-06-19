@@ -1,6 +1,6 @@
-﻿using Application.DTOs;
-using Domain.Transactions;
+﻿using Application.Managers;
 using Domain.Shared;
+using DTOs.TransactionDTOs;
 using MediatR;
 
 namespace Application.Queries.GetTransactionsQuery;
@@ -13,14 +13,6 @@ internal sealed class GetTransactionQueryHandler(ITransactionsManager transactio
     {
         var transactions = await transactionsManager.GetTransactions(request.BankAccountId);
 
-        var transactionsToReturn = transactions
-            .Select(x => new TransactionDto(
-                x.Id,
-                x.TransactionType,
-                x.AmountCents,
-                request.BankAccountId
-            ));
-
-        return Result<IEnumerable<TransactionDto>>.Success(transactionsToReturn);
+        return Result<IEnumerable<TransactionDto>>.Success(transactions);
     }
 }

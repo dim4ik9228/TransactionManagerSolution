@@ -1,6 +1,7 @@
-﻿using Application.DTOs;
+﻿using Application.Managers;
 using Application.Queries.GetBankAccountQuery;
 using Domain.BankAccounts;
+using DTOs.BankAccountDTOs;
 
 namespace ApplicationUnitTests.Queries;
 
@@ -15,7 +16,7 @@ public sealed class GetBankAccountQueryTests
         // Arrange
         var bankAccount = new BankAccount(_bankAccountId, default);
 
-        _bankAccountsManager.GetBankAccount(_bankAccountId)
+        _bankAccountsManager.GetBankAccountById(_bankAccountId)
             .Returns(bankAccount);
 
         var bankAccountDto = new BankAccountDto(bankAccount.AccountNumber, bankAccount.BalanceCents);
@@ -35,6 +36,6 @@ public sealed class GetBankAccountQueryTests
             .Be(bankAccountDto);
 
         await _bankAccountsManager.Received()
-            .GetBankAccount(_bankAccountId);
+            .GetBankAccountById(_bankAccountId);
     }
 }
