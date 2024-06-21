@@ -18,6 +18,7 @@ public static class DependencyInjection
         {
             option.UseNpgsql(config.GetConnectionString("PostgreSqlConnection"),
                 o => o.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery));
+            option.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
         });
 
         services.AddScoped<AddBankAccountCommand>();
