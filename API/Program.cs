@@ -19,8 +19,8 @@ builder.Services.AddApplicationServicesToCollection();
 builder.Services.AddPersistenceServicesToCollection(builder.Configuration);
 builder.Services.AddInfrastructureServicesToCollection();
 
-builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddExceptionHandler<NotFoundExceptionHandler>();
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
 
 var app = builder.Build();
